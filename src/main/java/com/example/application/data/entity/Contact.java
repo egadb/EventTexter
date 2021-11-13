@@ -2,13 +2,15 @@ package com.example.application.data.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.example.application.data.AbstractEntity;
+import com.example.application.data.Validator.ValidPhoneNumber;
 
 @Entity
 public class Contact extends AbstractEntity {
@@ -20,18 +22,21 @@ public class Contact extends AbstractEntity {
     private String lastName = "";
 
     @ManyToOne
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "gang_id")
     @NotNull
-    @JsonIgnoreProperties({"employees"})
-    private Company company;
+    @JsonIgnoreProperties({"members"})
+    private Gang gang;
 
+    @Lob
+    @JoinColumn(name = "checkbox_id")
     @NotNull
-    @ManyToOne
-    private Status status;
+    @JsonIgnoreProperties(ignoreUnknown=true)
+    private Checkbox selected;
 
-    @Email
+
+    //@ValidPhoneNumber(message="Please enter a valid phone number")
     @NotEmpty
-    private String email = "";
+    private String phone = "";
 
     @Override
     public String toString() {
@@ -54,27 +59,27 @@ public class Contact extends AbstractEntity {
         this.lastName = lastName;
     }
 
-    public Company getCompany() {
-        return company;
+    public Gang getGang() {
+        return gang;
     }
 
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setGang(Gang gang) {
+        this.gang = gang;
     }
 
-    public Status getStatus() {
-        return status;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getEmail() {
-        return email;
+    public Checkbox getSelected() {
+        return selected;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setSelected(Checkbox selected) {
+        this.selected = selected;
     }
 }

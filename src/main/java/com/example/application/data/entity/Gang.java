@@ -10,12 +10,12 @@ import javax.validation.constraints.NotBlank;
 import com.example.application.data.AbstractEntity;
 
 @Entity
-public class Company extends AbstractEntity {
+public class Gang extends AbstractEntity {
     @NotBlank
     private String name;
 
-    @OneToMany(mappedBy = "company")
-    private List<Contact> employees = new LinkedList<>();
+    @OneToMany(mappedBy = "gang")
+    private List<Contact> members = new LinkedList<>();
 
     public String getName() {
         return name;
@@ -25,11 +25,11 @@ public class Company extends AbstractEntity {
         this.name = name;
     }
 
-    public List<Contact> getEmployees() {
-        return employees;
+    public List<Contact> getMembers() {
+        return members;
     }
 
-    public void setEmployees(List<Contact> employees) {
-        this.employees = employees;
+    public void setMembers(List<Contact> members) {
+        this.members = members;
     }
 }
