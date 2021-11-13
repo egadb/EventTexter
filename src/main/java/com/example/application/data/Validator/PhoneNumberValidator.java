@@ -13,10 +13,10 @@ import javax.validation.ConstraintValidatorContext;
 public class PhoneNumberValidator implements ConstraintValidator<ValidPhoneNumber, String> {
 
     @Value("${TWILIO_ACCOUNT_SID}")
-    private String twilioAccountSid;
+    private String twilioAccountSid =  System.getenv("TWILIO_ACCOUNT_SID");
 
     @Value("${TWILIO_AUTH_TOKEN}")
-    private String twilioAuthToken;
+    private String twilioAuthToken = System.getenv("TWILIO_AUTH_TOKEN");
 
     @Override
     public void initialize(ValidPhoneNumber constraintAnnotation) {

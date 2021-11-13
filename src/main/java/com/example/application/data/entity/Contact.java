@@ -8,7 +8,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.example.application.data.AbstractEntity;
 import com.example.application.data.Validator.ValidPhoneNumber;
 
@@ -31,7 +30,7 @@ public class Contact extends AbstractEntity {
     private String status = "";
 
 
-    //@ValidPhoneNumber(message="Please enter a valid phone number")
+    @ValidPhoneNumber(message="Please enter a valid phone number")
     @NotEmpty
     private String phone = "";
 

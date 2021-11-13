@@ -65,7 +65,10 @@ public class ListView extends VerticalLayout {
         Button addContactButton = new Button("Add contact");
         addContactButton.addClickListener(click -> addContact()); 
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton);
+        Button inviteAllButton = new Button("Invite all");
+        addContactButton.addClickListener(click -> inviteAll()); 
+
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton, inviteAllButton);
         toolbar.addClassName("toolbar");
         return toolbar;
     }
@@ -87,6 +90,11 @@ public class ListView extends VerticalLayout {
     }
 
     private void addContact() { 
+        grid.asSingleSelect().clear();
+        editContact(new Contact());
+    }
+
+    private void inviteAll() { 
         grid.asSingleSelect().clear();
         editContact(new Contact());
     }

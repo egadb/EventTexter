@@ -10,7 +10,6 @@ import com.example.application.data.entity.Gang;
 import com.example.application.data.entity.Contact;
 import com.example.application.data.repository.ContactRepository;
 import com.example.application.data.repository.GangRepository;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 
 import org.slf4j.Logger;
@@ -47,13 +46,14 @@ public class DataGenerator {
                     LocalDateTime.now());
             contactGenerator.setData(Contact::setFirstName, DataType.FIRST_NAME);
             contactGenerator.setData(Contact::setLastName, DataType.LAST_NAME);
-            contactGenerator.setData(Contact::setPhone, DataType.PHONE_NUMBER);
+            //contactGenerator.setData(Contact::setPhone, DataType.PHONE_NUMBER);
 
 
             Random r = new Random(seed);
             List<Contact> contacts = contactGenerator.create(50, seed).stream().map(contact -> {
                 contact.setGang(gangs.get(r.nextInt(gangs.size())));
                 contact.setStatus("");
+                contact.setPhone("8196791259");
                 return contact;
             }).collect(Collectors.toList());
 
