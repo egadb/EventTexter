@@ -95,8 +95,8 @@ public class ListView extends VerticalLayout {
     }
 
     private void inviteAll() { 
-        grid.asSingleSelect().clear();
-        editContact(new Contact());
+        service.inviteAllContacts();
+        this.updateList();
     }
 
 
