@@ -27,11 +27,8 @@ public class Contact extends AbstractEntity {
     @JsonIgnoreProperties({"members"})
     private Gang gang;
 
-    @Lob
-    @JoinColumn(name = "checkbox_id")
     @NotNull
-    @JsonIgnoreProperties(ignoreUnknown=true)
-    private Checkbox selected;
+    private String status = "";
 
 
     //@ValidPhoneNumber(message="Please enter a valid phone number")
@@ -75,11 +72,11 @@ public class Contact extends AbstractEntity {
         this.phone = phone;
     }
 
-    public Checkbox getSelected() {
-        return selected;
+    public String getStatus() {
+        return status;
     }
 
-    public void setSelected(Checkbox selected) {
-        this.selected = selected;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

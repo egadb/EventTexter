@@ -53,7 +53,7 @@ public class DataGenerator {
             Random r = new Random(seed);
             List<Contact> contacts = contactGenerator.create(50, seed).stream().map(contact -> {
                 contact.setGang(gangs.get(r.nextInt(gangs.size())));
-                contact.setSelected(new Checkbox(false));
+                contact.setStatus("");
                 return contact;
             }).collect(Collectors.toList());
 

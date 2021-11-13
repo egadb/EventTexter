@@ -49,7 +49,7 @@ public class ListView extends VerticalLayout {
         grid.setSizeFull();
         grid.setColumns("firstName", "lastName", "phone");
         grid.addColumn(contact -> contact.getGang().getName()).setHeader("Gang");
-        grid.addColumn(contact -> contact.getSelected());
+        grid.addColumn(contact -> contact.getStatus()).setHeader("Status");
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
 
         grid.asSingleSelect().addValueChangeListener(event ->
