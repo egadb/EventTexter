@@ -29,13 +29,12 @@ public class CrmService {
     }
 
 
-    public List<Contact> inviteAllContacts() {
+    public void inviteAllContacts() {
         List<Contact> contacts = contactRepository.findAll();
          for(int i = 0; i < contacts.size(); i++) {
             contacts.get(i).setStatus("Invite sent");
         }
         contactRepository.saveAll(contacts);
-        return contacts;
     }
 
     public long countContacts() {

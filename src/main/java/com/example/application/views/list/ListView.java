@@ -66,7 +66,7 @@ public class ListView extends VerticalLayout {
         addContactButton.addClickListener(click -> addContact()); 
 
         Button inviteAllButton = new Button("Invite all");
-        addContactButton.addClickListener(click -> inviteAll()); 
+        inviteAllButton.addClickListener(click -> inviteAll());
 
         HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton, inviteAllButton);
         toolbar.addClassName("toolbar");
@@ -94,8 +94,9 @@ public class ListView extends VerticalLayout {
         editContact(new Contact());
     }
 
-    private void inviteAll() { 
+    private void inviteAll() {
         service.inviteAllContacts();
+        grid.asSingleSelect().clear();
         this.updateList();
     }
 
