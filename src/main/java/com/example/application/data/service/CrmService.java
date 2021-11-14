@@ -67,4 +67,19 @@ public class CrmService {
     public List<Gang> findAllGangs() {
         return gangRepository.findAll();
     }
+
+    public void updateStatusConfirmed(String from) {
+        List<Contact> contacts = contactRepository.findAll();
+         for(int i = 0; i < contacts.size(); i++) {
+             if(contacts.get(i).getPhone().equals(from))
+                {
+                contacts.get(i).setStatus("Confirmed");
+                Message message = Message.creator(new com.twilio.type.PhoneNumber(contacts.get(i).getPhone()),
+                new com.twilio.type.PhoneNumber("+14078097360"),
+                contacts.get(i).getFirstName() + ", thank you for your confirmation!.")
+                .create();
+                }
+        }
+        contactRepository.saveAll(contacts);
+    }
 }

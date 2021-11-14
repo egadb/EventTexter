@@ -14,7 +14,19 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import static spark.Spark.*;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.twilio.twiml.messaging.*;
+import com.twilio.twiml.*;
+import com.twilio.twiml.messaging.Body;
 
 
 @Route(value = "")
@@ -25,6 +37,10 @@ public class ListView extends VerticalLayout {
     TextField filterText = new TextField();
     ContactForm form;
     CrmService service;
+    String answer = "";
+    String from = "";
+    String fromCut = "";
+    Logger logger = LoggerFactory.getLogger(getClass());
 
     public ListView(CrmService service) {
         this.service = service;
@@ -35,7 +51,9 @@ public class ListView extends VerticalLayout {
 
         add(getToolbar(), getContent());
         updateList();
-        closeEditor(); 
+        closeEditor();
+
+        
     }
 
     private HorizontalLayout getContent() {
@@ -71,9 +89,47 @@ public class ListView extends VerticalLayout {
         Button inviteAllButton = new Button("Invite all");
         inviteAllButton.addClickListener(click -> inviteAll());
 
-        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton, inviteAllButton);
+        Button inviteSelectedButton = new Button("Invite Selected");
+        inviteSelectedButton.addClickListener(click -> inviteSelected());
+
+        Button refresh = new Button("Refresh");
+        refresh.addClickListener(click -> refresh());
+
+        HorizontalLayout toolbar = new HorizontalLayout(filterText, addContactButton, inviteAllButton, refresh);
         toolbar.addClassName("toolbar");
         return toolbar;
+    }
+
+    private void refresh() {
+        post("/sms", (req, res) -> {
+            Map<String, String> parameters = parseBody(req.body());
+            from = parameters.get("From");
+            answer = parameters.get("Body");
+            fromCut = from.substring(2);
+            res.type("application/xml");
+            Body body = new Body
+                    .Builder("")
+                    .build();
+            Message sms = new Message
+                    .Builder()
+                    .body(body)
+                    .build();
+            MessagingResponse twiml = new MessagingResponse
+                    .Builder()
+                    .message(sms)
+                    .build();
+            return twiml.toXml();
+        });
+
+        if (answer.toLowerCase().equals("yes"))
+        {
+            service.updateStatusConfirmed(fromCut);
+        }
+        updateList();
+    }
+
+    private void inviteSelected() {
+        
     }
 
     public void editContact(Contact contact) { 
@@ -100,7 +156,7 @@ public class ListView extends VerticalLayout {
     private void inviteAll() {
         service.inviteAllContacts();
         grid.asSingleSelect().clear();
-        this.updateList();
+        updateList();
     }
 
 
@@ -127,4 +183,22 @@ public class ListView extends VerticalLayout {
         updateList();
         closeEditor();
     }
+
+    public static Map<String, String> parseBody(String body) throws UnsupportedEncodingException {
+        String[] unparsedParams = body.split("&");
+        Map<String, String> parsedParams = new HashMap<String, String>();
+        for (int i = 0; i < unparsedParams.length; i++) {
+          String[] param = unparsedParams[i].split("=");
+          if (param.length == 2) {
+            parsedParams.put(urlDecode(param[0]), urlDecode(param[1]));
+          } else if (param.length == 1) {
+            parsedParams.put(urlDecode(param[0]), "");
+          }
+        }
+        return parsedParams;
+      }
+
+      public static String urlDecode(String s) throws UnsupportedEncodingException {
+        return URLDecoder.decode(s, "utf-8");
+      }
 }

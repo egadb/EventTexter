@@ -50,7 +50,7 @@ public class DataGenerator {
 
 
             Random r = new Random(seed);
-            List<Contact> contacts = contactGenerator.create(1, seed).stream().map(contact -> {
+            List<Contact> contacts = contactGenerator.create(5, seed).stream().map(contact -> {
                 contact.setGang(gangs.get(r.nextInt(gangs.size())));
                 contact.setStatus("");
                 contact.setPhone("8196791259");
